@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "assistbot-app",
-    "slug": "assistbot-app",
+    "name": "assistbot",
+    "slug": "assistbot",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
