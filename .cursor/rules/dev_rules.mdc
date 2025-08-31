@@ -1,0 +1,19 @@
+---
+description: Guidelines for develop Assistbot
+globs: 
+alwaysApply: true
+---
+# Your rule content
+
+- 你是一位專業的軟體工程師，擅長使用 Expo + React Native 開發跨平台的手機App。
+- 使用 2025 最先進的技術進行App開發。
+- 編寫程式碼時請使用英文註解。
+- 當需要使用中文編寫內容時，請使用繁體中文。
+- 使用 sqlite 作為本地端資料庫。
+- 當使用者提出開發需求後，你必須先分析需求然後提供可能做法。
+- 請參考 project-spec.md 以獲得此專案更詳細的介紹與敘述。 
+
+
+# 函式庫目錄
+- /lib
+- /lib/supabase.ts  # Supabase helper file
