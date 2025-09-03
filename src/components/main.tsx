@@ -1,6 +1,6 @@
 import { Session } from '@supabase/supabase-js'
 import React from 'react'
-import { Alert, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { isSessionMissingError, logAuthEvent } from '../lib/authUtils'
 import { supabase } from '../lib/supabase'
 import { useSession } from './SessionProvider'
@@ -114,92 +114,92 @@ export default function Main({ session, onNavigateToAccount }: MainProps) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView className="flex-1 bg-gray-50 pb-5">
       {/* 主頁面標題 */}
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <View style={styles.headerTitleContainer}>
-            <Text style={styles.title}>Assistbot 主頁面</Text>
-            <Text style={styles.subtitle}>歡迎使用 AI 助手應用</Text>
+      <View className="bg-white py-10 px-5 border-b border-gray-200 shadow-sm">
+        <View className="flex-row items-center justify-between w-full">
+          <View className="flex-1 items-center">
+            <Text className="text-3xl font-bold text-gray-800 mb-2 text-center">Assistbot 主頁面</Text>
+            <Text className="text-base text-gray-600 text-center">歡迎使用 AI 助手應用</Text>
           </View>
           <TouchableOpacity 
-            style={styles.logoutButton}
+            className="bg-red-500 py-3 px-5 rounded-lg min-w-20 min-h-11 items-center justify-center shadow-sm"
             onPress={handleLogout}
             activeOpacity={0.7}
             hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
           >
-            <Text style={styles.logoutButtonText}>登出</Text>
+            <Text className="text-white text-base font-semibold">登出</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* 用戶歡迎區域 */}
-      <View style={styles.welcomeSection}>
-        <Text style={styles.welcomeTitle}>
+      <View className="bg-white mx-5 p-5 rounded-xl shadow-sm">
+        <Text className="text-xl font-semibold text-gray-800 mb-2">
           您好，{userName ? userName.split('@')[0] : '用戶'}！
         </Text>
-        <Text style={styles.welcomeText}>
+        <Text className="text-base text-gray-600 leading-6">
           這是您的個人 AI 助手控制台
         </Text>
       </View>
 
       {/* 主要功能區域 */}
-      <View style={styles.mainContent}>
-        <Text style={styles.sectionTitle}>主要功能</Text>
+      <View className="px-5 mb-5">
+        <Text className="text-xl font-semibold text-gray-800 mb-4">主要功能</Text>
         
         {/* 即將推出的功能卡片 */}
-        <View style={styles.featureCard}>
-          <Text style={styles.featureTitle}>🤖 AI 對話助手</Text>
-          <Text style={styles.featureDescription}>
+        <View className="bg-white p-5 rounded-xl mb-4 shadow-sm">
+          <Text className="text-lg font-semibold text-gray-800 mb-2">🤖 AI 對話助手</Text>
+          <Text className="text-sm text-gray-600 leading-5 mb-4">
             與智能助手進行對話，獲得各種問題的解答
           </Text>
-          <TouchableOpacity style={[styles.featureButton, styles.comingSoonButton]} disabled>
-            <Text style={styles.comingSoonText}>即將推出</Text>
+          <TouchableOpacity className="py-2.5 px-4 rounded-lg bg-gray-200 items-center" disabled>
+            <Text className="text-gray-600 text-sm font-medium">即將推出</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.featureCard}>
-          <Text style={styles.featureTitle}>📝 智能筆記</Text>
-          <Text style={styles.featureDescription}>
+        <View className="bg-white p-5 rounded-xl mb-4 shadow-sm">
+          <Text className="text-lg font-semibold text-gray-800 mb-2">📝 智能筆記</Text>
+          <Text className="text-sm text-gray-600 leading-5 mb-4">
             讓 AI 幫助您整理和管理重要筆記
           </Text>
-          <TouchableOpacity style={[styles.featureButton, styles.comingSoonButton]} disabled>
-            <Text style={styles.comingSoonText}>即將推出</Text>
+          <TouchableOpacity className="py-2.5 px-4 rounded-lg bg-gray-200 items-center" disabled>
+            <Text className="text-gray-600 text-sm font-medium">即將推出</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.featureCard}>
-          <Text style={styles.featureTitle}>🔧 任務助手</Text>
-          <Text style={styles.featureDescription}>
+        <View className="bg-white p-5 rounded-xl mb-4 shadow-sm">
+          <Text className="text-lg font-semibold text-gray-800 mb-2">🔧 任務助手</Text>
+          <Text className="text-sm text-gray-600 leading-5 mb-4">
             AI 驅動的任務管理和提醒系統
           </Text>
-          <TouchableOpacity style={[styles.featureButton, styles.comingSoonButton]} disabled>
-            <Text style={styles.comingSoonText}>即將推出</Text>
+          <TouchableOpacity className="py-2.5 px-4 rounded-lg bg-gray-200 items-center" disabled>
+            <Text className="text-gray-600 text-sm font-medium">即將推出</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* 帳號管理區域 */}
-      <View style={styles.accountSection}>
-        <Text style={styles.sectionTitle}>帳號管理</Text>
+      <View className="px-5 mb-5">
+        <Text className="text-xl font-semibold text-gray-800 mb-4">帳號管理</Text>
         <TouchableOpacity
-          style={styles.accountButton}
+          className="bg-white py-4 px-5 rounded-xl flex-row items-center shadow-sm"
           onPress={onNavigateToAccount}
         >
-          <Text style={styles.accountButtonIcon}>⚙️</Text>
-          <View style={styles.accountButtonContent}>
-            <Text style={styles.accountButtonTitle}>個人設定</Text>
-            <Text style={styles.accountButtonDescription}>
+          <Text className="text-2xl mr-4">⚙️</Text>
+          <View className="flex-1">
+            <Text className="text-base font-semibold text-gray-800 mb-1">個人設定</Text>
+            <Text className="text-sm text-gray-600 leading-4">
               管理您的個人資料、偏好設定和帳號資訊
             </Text>
           </View>
-          <Text style={styles.accountButtonArrow}>›</Text>
+          <Text className="text-xl text-gray-600 ml-2">›</Text>
         </TouchableOpacity>
       </View>
 
       {/* 應用資訊 */}
-      <View style={styles.appInfo}>
-        <Text style={styles.appInfoText}>
+      <View className="px-5 items-center">
+        <Text className="text-xs text-gray-400 text-center">
           Assistbot v1.0.0 - 您的智能助手夥伴
         </Text>
       </View>
@@ -207,197 +207,4 @@ export default function Main({ session, onNavigateToAccount }: MainProps) {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: '#f8f9fa',
-    paddingBottom: 20,
-  },
-  header: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  headerTitleContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#6c757d',
-    textAlign: 'center',
-  },
-  logoutButton: {
-    backgroundColor: '#FF3B30',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    minWidth: 80,
-    minHeight: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  logoutButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  welcomeSection: {
-    backgroundColor: '#ffffff',
-    margin: 20,
-    padding: 20,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  welcomeTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 8,
-  },
-  welcomeText: {
-    fontSize: 16,
-    color: '#6c757d',
-    lineHeight: 24,
-  },
-  mainContent: {
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 16,
-  },
-  featureCard: {
-    backgroundColor: '#ffffff',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  featureTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 8,
-  },
-  featureDescription: {
-    fontSize: 14,
-    color: '#6c757d',
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  featureButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  comingSoonButton: {
-    backgroundColor: '#e9ecef',
-  },
-  comingSoonText: {
-    color: '#6c757d',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  accountSection: {
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  accountButton: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  accountButtonIcon: {
-    fontSize: 24,
-    marginRight: 16,
-  },
-  accountButtonContent: {
-    flex: 1,
-  },
-  accountButtonTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 4,
-  },
-  accountButtonDescription: {
-    fontSize: 14,
-    color: '#6c757d',
-    lineHeight: 18,
-  },
-  accountButtonArrow: {
-    fontSize: 20,
-    color: '#6c757d',
-    marginLeft: 8,
-  },
-  appInfo: {
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  appInfoText: {
-    fontSize: 12,
-    color: '#adb5bd',
-    textAlign: 'center',
-  },
-})
+

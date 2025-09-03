@@ -74,10 +74,10 @@ const createAsyncStorage = () => {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: Platform.OS === 'web' ? createWebStorage() : createAsyncStorage(),
+    ...(Platform.OS !== 'web' ? { storage: AsyncStorage } : {}),
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: Platform.OS === 'web',
-    debug: __DEV__,
+    flowType: Platform.OS === 'web' ? 'pkce' : 'implicit',
   },
 })

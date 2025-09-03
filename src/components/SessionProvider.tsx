@@ -147,7 +147,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" />
       </View>
     )

@@ -44,4 +44,6 @@ app-example
 android/
 ios/
 
-
+# others
+ref-codes/
+.idea/

@@ -1,5 +1,6 @@
+import * as WebBrowser from 'expo-web-browser'
 import React, { useState } from 'react'
-import { Alert, AppState, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, AppState, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { supabase } from '../lib/supabase'
 
 
@@ -73,21 +74,108 @@ export default function Auth() {
     setLoading(false)
   }
 
+  async function signInWithGoogle() {
+    try {
+      setLoading(true)
+      console.log('開始 Google 登入...')
+      
+      if (Platform.OS === 'web') {
+        // Web 平台使用原有邏輯
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: `${window.location.origin}/auth/callback`,
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'select_account'
+            }
+          }
+        })
+        
+        if (error) {
+          throw error
+        }
+      } else {
+        // React Native 平台使用 expo-web-browser
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: 'assistbotapp://auth/callback',
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'select_account'
+            }
+          }
+        })
+        
+        if (error) {
+          throw error
+        }
+        
+        if (data.url) {
+          // 使用 expo-web-browser 打開 OAuth URL
+          const result = await WebBrowser.openAuthSessionAsync(
+            data.url,
+            'assistbotapp://auth/callback'
+          )
+          
+          if (result.type === 'success') {
+            console.log('OAuth 回調成功:', result.url)
+            // 處理回調 URL
+            await supabase.auth.getSession()
+          } else if (result.type === 'cancel') {
+            console.log('用戶取消了 OAuth 流程')
+          } else {
+            console.log('OAuth 流程結果:', result.type)
+          }
+        }
+      }
+    } catch (error: any) {
+      console.error('Google 登入錯誤:', error)
+      Alert.alert('Google 登入失敗', error.message || '登入過程中發生錯誤')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardContainer}
+      className="flex-1"
     >
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>
+      <View className="flex-1 p-5 bg-white">
+        <View className="bg-white rounded-xl p-6 mx-2 shadow-sm">
+          <Text className="text-2xl font-bold text-center text-gray-800 mb-2">
             {isSignUp ? '建立新帳號' : '登入您的帳號'}
           </Text>
+
+          {/* Google 登入按鈕 */}
+          <View className="pt-2 pb-2 self-stretch mt-5">
+            <TouchableOpacity
+              className="bg-white border border-gray-300 rounded-lg py-3 px-4 flex-row items-center justify-center shadow-sm"
+              onPress={signInWithGoogle}
+              disabled={loading}
+            >
+              <View className="bg-blue-500 w-6 h-6 rounded-full mr-3 items-center justify-center">
+                <Text className="text-white text-sm font-bold">G</Text>
+              </View>
+              <Text className="text-gray-800 text-base font-medium">
+                使用 Google 登入
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* 分隔線 */}
+          <View className="flex-row items-center my-5">
+            <View className="flex-1 h-px bg-gray-300" />
+            <Text className="mx-4 text-gray-600 text-sm font-medium">或</Text>
+            <View className="flex-1 h-px bg-gray-300" />
+          </View>
           
-          <View style={[styles.verticallySpaced, styles.mt20]}>
-            <Text style={styles.inputLabel}>Email 信箱</Text>
+          <View className="pt-2 pb-2 self-stretch mt-5">
+            <Text className="text-gray-800 text-base font-semibold mb-2">Email 信箱</Text>
             <TextInput
-              style={styles.textInput}
+              className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
               onChangeText={(text: string) => setEmail(text)}
               value={email}
               placeholder="請輸入您的 Email"
@@ -97,10 +185,10 @@ export default function Auth() {
             />
           </View>
           
-          <View style={styles.verticallySpaced}>
-            <Text style={styles.inputLabel}>密碼</Text>
+          <View className="pt-2 pb-2 self-stretch">
+            <Text className="text-gray-800 text-base font-semibold mb-2">密碼</Text>
             <TextInput
-              style={styles.textInput}
+              className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
               onChangeText={(text: string) => setPassword(text)}
               value={password}
               secureTextEntry={true}
@@ -110,25 +198,25 @@ export default function Auth() {
             />
           </View>
           
-          <View style={[styles.verticallySpaced, styles.mt30]}>
+          <View className="pt-2 pb-2 self-stretch mt-8">
             <TouchableOpacity
-              style={[styles.primaryButton, loading && styles.disabledButton]}
+              className={`rounded-lg py-4 items-center justify-center ${loading ? 'bg-gray-400 opacity-60' : 'bg-blue-500'}`}
               disabled={loading} 
               onPress={isSignUp ? signUpWithEmail : signInWithEmail}
             >
-              <Text style={styles.primaryButtonText}>
+              <Text className="text-white text-base font-semibold">
                 {loading ? '處理中...' : (isSignUp ? '註冊' : '登入')}
               </Text>
             </TouchableOpacity>
           </View>
           
-          <View style={styles.verticallySpaced}>
+          <View className="pt-2 pb-2 self-stretch">
             <TouchableOpacity
-              style={styles.secondaryButton}
+              className="py-3 items-center justify-center"
               disabled={loading} 
               onPress={() => setIsSignUp(!isSignUp)}
             >
-              <Text style={styles.secondaryButtonText}>
+              <Text className="text-blue-500 text-base font-medium">
                 {isSignUp ? '已有帳號？立即登入' : '還沒有帳號？立即註冊'}
               </Text>
             </TouchableOpacity>
@@ -139,87 +227,3 @@ export default function Auth() {
   )
 }
 
-const styles = StyleSheet.create({
-  keyboardContainer: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  formContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 24,
-    marginHorizontal: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  formTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#333',
-    marginBottom: 8,
-  },
-  verticallySpaced: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
-  },
-  mt30: {
-    marginTop: 30,
-  },
-  inputLabel: {
-    color: '#333',
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-    color: '#333',
-  },
-  primaryButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#ccc',
-    opacity: 0.6,
-  },
-  primaryButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-})

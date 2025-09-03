@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'
 import { useEffect, useState } from 'react'
-import { Alert, Button, Image, StyleSheet, View } from 'react-native'
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import { supabase } from '../lib/supabase'
 
 interface Props {
@@ -94,37 +94,27 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
         <Image
           source={{ uri: avatarUrl }}
           accessibilityLabel="Avatar"
-          style={[avatarSize, styles.avatar, styles.image]}
+          className="rounded-lg overflow-hidden max-w-full"
+          style={avatarSize}
         />
       ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage]} />
+        <View 
+          className="bg-gray-800 border border-gray-300 rounded-lg"
+          style={avatarSize}
+        />
       )}
       <View>
-        <Button
-          title={uploading ? '上傳中...' : '上傳頭像'}
+        <TouchableOpacity
+          className={`py-2 px-4 rounded-lg items-center ${uploading ? 'bg-gray-400' : 'bg-blue-500'}`}
           onPress={uploadAvatar}
           disabled={uploading}
-        />
+        >
+          <Text className="text-white text-base font-medium">
+            {uploading ? '上傳中...' : '上傳頭像'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  avatar: {
-    borderRadius: 5,
-    overflow: 'hidden',
-    maxWidth: '100%',
-  },
-  image: {
-    objectFit: 'cover',
-    paddingTop: 0,
-  },
-  noImage: {
-    backgroundColor: '#333',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'rgb(200, 200, 200)',
-    borderRadius: 5,
-  },
-})

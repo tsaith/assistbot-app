@@ -6,10 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "assistbotapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zendev.assistbot"
     },
     "android": {
       "adaptiveIcon": {
@@ -17,8 +16,22 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.assistbot"
+      "package": "com.zendev.assistbot",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "assistbotapp"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -34,7 +47,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-linking"
     ],
     "experiments": {
       "typedRoutes": true

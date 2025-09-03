@@ -1,6 +1,6 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { supabase } from '../lib/supabase'
 
 interface AccountProps {
@@ -88,199 +88,94 @@ export default function Account({ session, onBack }: AccountProps) {
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-gray-50">
       {/* 標題和返回按鈕 */}
-      <View style={styles.header}>
+      <View className="bg-white py-5 px-5 border-b border-gray-200 shadow-sm">
         {onBack && (
-          <TouchableOpacity style={styles.backButton} onPress={onBack}>
-            <Text style={styles.backButtonText}>← 返回主頁</Text>
+          <TouchableOpacity className="mb-2.5" onPress={onBack}>
+            <Text className="text-base text-blue-500 font-medium">← 返回主頁</Text>
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>個人設定</Text>
+        <Text className="text-2xl font-bold text-gray-800 text-center">個人設定</Text>
       </View>
 
-      <View style={styles.formContainer}>
-        <View style={[styles.verticallySpaced, styles.mt20]}>
-          <Text style={styles.inputLabel}>Email 信箱</Text>
+      <View className="bg-white mx-5 rounded-xl p-5 shadow-sm">
+        <View className="pt-2 pb-2 self-stretch mt-5">
+          <Text className="text-gray-800 text-base font-semibold mb-2">Email 信箱</Text>
           <TextInput 
-            style={[styles.textInput, styles.disabledInput]}
+            className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-gray-100 text-gray-500"
             value={session?.user?.email || ''} 
             editable={false}
           />
         </View>
       
-      <View style={styles.verticallySpaced}>
-        <Text style={styles.inputLabel}>全名</Text>
-        <TextInput 
-          style={styles.textInput}
-          value={fullName || ''} 
-          onChangeText={(text: string) => setFullName(text)}
-          placeholder="請輸入您的全名"
-        />
-      </View>
+        <View className="pt-2 pb-2 self-stretch">
+          <Text className="text-gray-800 text-base font-semibold mb-2">全名</Text>
+          <TextInput 
+            className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
+            value={fullName || ''} 
+            onChangeText={(text: string) => setFullName(text)}
+            placeholder="請輸入您的全名"
+          />
+        </View>
       
-      <View style={styles.verticallySpaced}>
-        <Text style={styles.inputLabel}>名字</Text>
-        <TextInput 
-          style={styles.textInput}
-          value={firstName || ''} 
-          onChangeText={(text: string) => setFirstName(text)}
-          placeholder="請輸入您的名字"
-        />
-      </View>
+        <View className="pt-2 pb-2 self-stretch">
+          <Text className="text-gray-800 text-base font-semibold mb-2">名字</Text>
+          <TextInput 
+            className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
+            value={firstName || ''} 
+            onChangeText={(text: string) => setFirstName(text)}
+            placeholder="請輸入您的名字"
+          />
+        </View>
       
-      <View style={styles.verticallySpaced}>
-        <Text style={styles.inputLabel}>姓氏</Text>
-        <TextInput 
-          style={styles.textInput}
-          value={lastName || ''} 
-          onChangeText={(text: string) => setLastName(text)}
-          placeholder="請輸入您的姓氏"
-        />
-      </View>
+        <View className="pt-2 pb-2 self-stretch">
+          <Text className="text-gray-800 text-base font-semibold mb-2">姓氏</Text>
+          <TextInput 
+            className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
+            value={lastName || ''} 
+            onChangeText={(text: string) => setLastName(text)}
+            placeholder="請輸入您的姓氏"
+          />
+        </View>
       
-      <View style={styles.verticallySpaced}>
-        <Text style={styles.inputLabel}>時區</Text>
-        <TextInput 
-          style={styles.textInput}
-          value={timezone || ''} 
-          onChangeText={(text: string) => setTimezone(text)}
-          placeholder="Asia/Taipei"
-        />
-      </View>
+        <View className="pt-2 pb-2 self-stretch">
+          <Text className="text-gray-800 text-base font-semibold mb-2">時區</Text>
+          <TextInput 
+            className="border border-gray-300 rounded-lg px-4 py-3 text-base bg-white text-gray-800"
+            value={timezone || ''} 
+            onChangeText={(text: string) => setTimezone(text)}
+            placeholder="Asia/Taipei"
+          />
+        </View>
 
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <TouchableOpacity
-          style={[styles.updateButton, loading && styles.disabledButton]}
-          onPress={() => updateProfile({ 
-            full_name: fullName, 
-            first_name: firstName, 
-            last_name: lastName, 
-            timezone: timezone 
-          })}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>
-            {loading ? '更新中...' : '更新個人資料'}
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View className="pt-2 pb-2 self-stretch mt-5">
+          <TouchableOpacity
+            className={`rounded-lg py-4 items-center justify-center ${loading ? 'bg-gray-400 opacity-60' : 'bg-blue-500'}`}
+            onPress={() => updateProfile({ 
+              full_name: fullName, 
+              first_name: firstName, 
+              last_name: lastName, 
+              timezone: timezone 
+            })}
+            disabled={loading}
+          >
+            <Text className="text-white text-base font-semibold">
+              {loading ? '更新中...' : '更新個人資料'}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.verticallySpaced}>
-        <TouchableOpacity 
-          style={styles.signOutButton}
-          onPress={() => supabase.auth.signOut()}
-        >
-          <Text style={styles.signOutButtonText}>登出</Text>
-        </TouchableOpacity>
+        <View className="pt-2 pb-2 self-stretch">
+          <TouchableOpacity 
+            className="bg-red-500 rounded-lg py-4 items-center justify-center"
+            onPress={() => supabase.auth.signOut()}
+          >
+            <Text className="text-white text-base font-semibold">登出</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  header: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  backButton: {
-    marginBottom: 10,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '500',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    textAlign: 'center',
-  },
-  formContainer: {
-    backgroundColor: '#ffffff',
-    margin: 20,
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  verticallySpaced: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
-  },
-  inputLabel: {
-    color: '#333',
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-    color: '#333',
-  },
-  disabledInput: {
-    color: '#999',
-    backgroundColor: '#f5f5f5',
-  },
-  updateButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#ccc',
-    opacity: 0.6,
-  },
-  signOutButton: {
-    backgroundColor: '#FF3B30',
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  signOutButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-  },
-})

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import "../global.css";
 import Account from "../src/components/Account";
 import Auth from "../src/components/Auth";
 import Main from "../src/components/main";
 import { useSession } from "../src/components/SessionProvider";
+
 
 export default function Index() {
   const { session } = useSession();
@@ -18,10 +20,10 @@ export default function Index() {
 
   if (!session) {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>歡迎使用 Assistbot</Text>
-          <Text style={styles.subtitle}>請登入或註冊來開始使用</Text>
+      <ScrollView className="flex-1 bg-gray-50">
+        <View className="items-center py-10 bg-white border-b border-gray-200">
+          <Text className="text-3xl font-bold text-gray-800 mb-2">歡迎使用 Assistbot</Text>
+          <Text className="text-base text-gray-600 text-center">請登入或註冊來開始使用</Text>
         </View>
         <Auth />
       </ScrollView>
@@ -41,27 +43,4 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    alignItems: 'center',
-    paddingVertical: 40,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-  },
-});
+
